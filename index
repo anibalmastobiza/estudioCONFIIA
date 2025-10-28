@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio CONFIIA - Confianza en IA en Fisioterapia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5C6BC0 0%, #3F51B5 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .consent-text {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .consent-text h3 {
+            color: #3F51B5;
+            margin-bottom: 15px;
+        }
+
+        .consent-text p {
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #5C6BC0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .vignette-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .vignette {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .vignette:hover {
+            border-color: #5C6BC0;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(92, 107, 192, 0.2);
+        }
+
+        .vignette.selected {
+            border-color: #3F51B5;
+            background: #E8EAF6;
+        }
+
+        .vignette h4 {
+            color: #3F51B5;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .vignette p {
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .vignette-label {
+            text-align: center;
+            font-weight: bold;
+            color: #3F51B5;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .question-counter {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #5C6BC0 0%, #3F51B5 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(92, 107, 192, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5C6BC0 0%, #3F51B5 100%);
+            transition: width 0.3s;
+        }
+
+        .thank-you {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .thank-you h2 {
+            color: #3F51B5;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .thank-you p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .funding-info {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .vignette-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Estudio CONFIIA</h1>
+            <p>Confianza y Nuevas Formas de Integración de la Inteligencia Artificial en Fisioterapia</p>
+        </div>
+
+        <div class="content">
+            <!-- Sección 1: Consentimiento Informado -->
+            <div id="section-consent" class="section active">
+                <h2 style="color: #3F51B5; margin-bottom: 20px;">Consentimiento Informado</h2>
+                
+                <div class="consent-text">
+                    <h3>Información sobre el estudio</h3>
+                    <p>Está invitado/a a participar en un estudio de investigación del Proyecto CONFIIA sobre la confianza en sistemas de inteligencia artificial aplicados a la fisioterapia.</p>
+                    
+                    <h3>Propósito del estudio</h3>
+                    <p>Este estudio tiene como objetivo comprender cómo los profesionales de la fisioterapia evalúan diferentes escenarios de uso de IA en su práctica clínica. La información recopilada ayudará a diseñar sistemas de IA más confiables y mejor integrados en el contexto sanitario.</p>
+                    
+                    <h3>Procedimiento</h3>
+                    <p>Se le presentarán 5 pares de viñetas clínicas que describen diferentes escenarios de uso de IA en fisioterapia. Para cada par, deberá seleccionar el escenario que le inspire mayor confianza. El estudio dura aproximadamente 5 minutos.</p>
+                    
+                    <h3>Confidencialidad y protección de datos</h3>
+                    <p>Sus respuestas serán completamente anónimas. Los datos se almacenarán de forma segura y solo serán utilizados con fines de investigación académica. No se recopilará información personal identificable.</p>
+                    
+                    <h3>Participación voluntaria</h3>
+                    <p>Su participación es completamente voluntaria. Puede abandonar el estudio en cualquier momento sin necesidad de justificación.</p>
+                    
+                    <h3>Contacto</h3>
+                    <p>Para más información sobre el estudio, puede contactar con el equipo investigador del Proyecto CONFIIA.</p>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="consent-checkbox">
+                    <label for="consent-checkbox">He leído y acepto participar voluntariamente en este estudio</label>
+                </div>
+
+                <button class="btn" id="btn-start" disabled onclick="startStudy()">Comenzar estudio</button>
+            </div>
+
+            <!-- Sección 2: Datos demográficos -->
+            <div id="section-demographics" class="section">
+                <h2 style="color: #3F51B5; margin-bottom: 20px;">Información del participante</h2>
+                
+                <div class="form-group">
+                    <label for="professional-status">¿Usted es estudiante o profesional?</label>
+                    <select id="professional-status" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Estudiante">Estudiante</option>
+                        <option value="Profesional">Profesional</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">¿Cuántos años de experiencia tiene en fisioterapia?</label>
+                    <select id="experience" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Menos de 1 año">Menos de 1 año</option>
+                        <option value="1-5 años">1-5 años</option>
+                        <option value="6-10 años">6-10 años</option>
+                        <option value="11-20 años">11-20 años</option>
+                        <option value="Más de 20 años">Más de 20 años</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="specialty">Indique, por favor, su área de especialización en fisioterapia</label>
+                    <select id="specialty" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Sin especialidad">Sin especialidad</option>
+                        <option value="Fisioterapia deportiva">Fisioterapia deportiva</option>
+                        <option value="Fisioterapia neurológica">Fisioterapia neurológica</option>
+                        <option value="Fisioterapia traumatológica">Fisioterapia traumatológica</option>
+                        <option value="Fisioterapia respiratoria">Fisioterapia respiratoria</option>
+                        <option value="Fisioterapia geriátrica">Fisioterapia geriátrica</option>
+                        <option value="Fisioterapia pediátrica">Fisioterapia pediátrica</option>
+                        <option value="Fisioterapia del suelo pélvico">Fisioterapia del suelo pélvico</option>
+                        <option value="Otra">Otra</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Por favor, indique su identidad de género</label>
+                    <select id="gender" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Hombre">Hombre</option>
+                        <option value="Mujer">Mujer</option>
+                        <option value="No binario">No binario / Género no conforme</option>
+                        <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="age-group">¿Cuál es su grupo de edad?</label>
+                    <select id="age-group" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Menos de 25 años">Menos de 25 años</option>
+                        <option value="25-34 años">25-34 años</option>
+                        <option value="35-44 años">35-44 años</option>
+                        <option value="45-54 años">45-54 años</option>
+                        <option value="55 años o más">55 años o más</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ai-familiarity">¿Qué nivel de familiaridad tiene con sistemas de inteligencia artificial?</label>
+                    <select id="ai-familiarity" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Nada familiarizado">Nada familiarizado</option>
+                        <option value="Poco familiarizado">Poco familiarizado</option>
+                        <option value="Moderadamente familiarizado">Moderadamente familiarizado</option>
+                        <option value="Muy familiarizado">Muy familiarizado</option>
+                        <option value="Extremadamente familiarizado">Extremadamente familiarizado</option>
+                    </select>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn" onclick="goToSection('section-consent')">Atrás</button>
+                    <button class="btn" id="btn-demographics" disabled onclick="startComparisons()">Continuar</button>
+                </div>
+            </div>
+
+            <!-- Sección 3: Comparaciones -->
+            <div id="section-comparisons" class="section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+
+                <div class="question-counter" id="question-counter">Comparación 1 de 5</div>
+
+                <p style="text-align: center; margin-bottom: 30px; color: #666; font-size: 1.1em;">
+                    Seleccione el escenario que le inspire <strong>mayor confianza</strong>:
+                </p>
+
+                <div class="vignette-comparison" id="vignette-container">
+                    <!-- Las viñetas se generarán dinámicamente -->
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn" onclick="previousComparison()" id="btn-previous" disabled>Anterior</button>
+                    <button class="btn" onclick="nextComparison()" id="btn-next" disabled>Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Sección 4: Agradecimiento -->
+            <div id="section-thankyou" class="section">
+                <div class="thank-you">
+                    <h2>¡Muchas gracias por su participación!</h2>
+                    <p>Sus respuestas han sido registradas correctamente.</p>
+                    <p>La información proporcionada es muy valiosa para comprender cómo diseñar sistemas de IA más confiables y útiles en el ámbito de la fisioterapia.</p>
+                    <p>Si tiene alguna pregunta sobre el estudio, no dude en contactar con el equipo investigador del Proyecto CONFIIA.</p>
+                </div>
+
+                <div class="funding-info">
+                    <strong>Proyecto CONFIIA</strong><br>
+                    Confianza y Nuevas Formas de Integración de la Inteligencia Artificial<br>
+                    Ramón Ortega Lozano & Aníbal M. Astobiza<br><br>
+                    Financiado por: PID2024-156166OA-I00<br>
+                    MICIU/AEI/10.13039/501100011033 y FSE+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vignettes.js"></script>
+    <script src="main.js"></script>
+    <script>
+        // Asegurar que el event listener del checkbox funciona
+        document.addEventListener('DOMContentLoaded', function() {
+            const consentCheckbox = document.getElementById('consent-checkbox');
+            const btnStart = document.getElementById('btn-start');
+            
+            if (consentCheckbox && btnStart) {
+                consentCheckbox.addEventListener('change', function() {
+                    btnStart.disabled = !this.checked;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
